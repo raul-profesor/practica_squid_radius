@@ -8,8 +8,7 @@ services:
     volumes:
       - /squid_conf/certificado:/scripts
     ports:
-      - "3128:3128"
-      - "3129:3129"
+      - "Omplir:Omplir"
     networks:
       squid_network:
         ipv4_address: 10.10.1.2
@@ -44,8 +43,7 @@ services:
       dockerfile: Dockerfile.radius
     container_name: radius
     ports:
-      - "1812:1812"
-      - "1813:1813"
+      - "Omplir:Omplir"
     networks:
       squid_network:
         ipv4_address: 10.10.1.5
