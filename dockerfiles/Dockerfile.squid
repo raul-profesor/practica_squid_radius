@@ -1,0 +1,12 @@
+FROM debian:bookworm-slim
+RUN apt-get update && apt-get install -y locales squid-openssl && rm -rf /var/lib/apt/lists/* \
+	&& localedef -i es_ES -c -f UTF-8 -A /usr/share/locale/locale.alias es_ES.UTF-8
+ENV LANG es_ES.utf8
+COPY squid_conf/squid.conf /etc/squid/
+COPY squid_conf/radius_config /etc/
+RUN mkdir -p /scripts
+COPY squid_conf/generar_certificado.sh /scripts
+WORKDIR /scripts
+RUN chmod +x generar_certificado.sh
+RUN ./generar_certificado.sh
+CMD service squid start && tail -f /dev/null

@@ -1,0 +1,13 @@
+FROM debian:bookworm-slim
+RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
+	&& localedef -i es_ES -c -f UTF-8 -A /usr/share/locale/locale.alias es_ES.UTF-8
+ENV LANG es_ES.utf8
+RUN apt-get update && apt-get install freeradius freeradius-mysql default-mysql-client -y
+COPY radius_conf/clients.conf authorize /etc/freeradius/3.0/
+COPY radius_conf/authorize /etc/freeradius/3.0/mods-config/files/
+COPY radius_conf/sql /etc/freeradius/3.0/mods-available/
+COPY radius_conf/default /etc/freeradius/3.0/sites-available/
+COPY radius_conf/inner-tunnel /etc/freeradius/3.0/sites-available/
+RUN chown freerad:freerad /etc/freeradius/3.0/clients.conf /etc/freeradius/3.0/mods-config/files/authorize
+RUN ln -s /etc/freeradius/3.0/mods-available/sql /etc/freeradius/3.0/mods-enabled/sql
+CMD service freeradius start && tail -f /dev/null
