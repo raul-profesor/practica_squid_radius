@@ -10,4 +10,4 @@ COPY radius_conf/default /etc/freeradius/3.0/sites-available/
 COPY radius_conf/inner-tunnel /etc/freeradius/3.0/sites-available/
 RUN chown freerad:freerad /etc/freeradius/3.0/clients.conf /etc/freeradius/3.0/mods-config/files/authorize
 RUN ln -s /etc/freeradius/3.0/mods-available/sql /etc/freeradius/3.0/mods-enabled/sql
-CMD service freeradius start && tail -f /dev/null
+CMD service freeradius restart && tail -f /dev/null
